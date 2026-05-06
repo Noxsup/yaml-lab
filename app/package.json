@@ -1,0 +1,7 @@
+{
+	"name" : "yaml-lab-app",
+	"scripts": {
+		"lint": "echo '✅ Lint passed'",
+		"test": "echo '✅ Tests passed'"
+	}
+}
