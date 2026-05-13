@@ -1,0 +1,45 @@
+---
+trigger:
+  branches:
+    include:
+      - main
+      - staging
+
+variables:
+  phpVersion: '8.4'
+  environment: 'production'
+  appName: 'myapi'
+
+stages:
+  - stage: Build
+    displayName: 'Build Stage'
+    jobs:
+      - job: BuildApp
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - script: npm run build
+            displayName: 'Build Application'
+
+  - stage: Test
+    dependsOn: Build
+    jobs:
+      - job: Run Tests
+        pool:
+          vmImage: 'ubuntu-latest'
+          steps:
+            - checkout: self
+            - script: npm test
+              displayName: 'Run Tests'
+  - stage: Deploy
+    dependsOn: Test
+    condition: succeeded()
+    jobs:
+      - job: DeployToProduction
+        pool:
+          vmImage: 'ubuntu-latest'
+          steps:
+            - checkout: self
+            - script: echo "Deploying to production environment"
+              displayName: 'Deploy Application'

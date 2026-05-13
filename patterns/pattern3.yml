@@ -1,0 +1,27 @@
+---
+name: Pattern 4
+
+on:
+  push:
+    branches: [main, develop, uat]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run echo "linting"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      -run echo "testing"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - run echo "building"

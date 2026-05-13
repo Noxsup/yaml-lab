@@ -1,0 +1,34 @@
+---
+name: Patter =n 6
+
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAGE_NAME: myapp
+  REGISTRY: ghcr.io
+  NODE_VERSION: '18'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checjout code
+        uses: actions/checkout@v4
+
+      - name: show pipeline info
+        run: |
+          echo "Triggered by : ${{github.actor}}"
+          echo "Branch: ${{github.ref}}"
+          echo "commit: ${{github.sha}}"
+          echo "run number: ${{github.run_number}}"
+
+
+      - name: set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Build docker image
+        run: docker build -t ${{env.REGISTRY}}/${{github.repository}}:${{github.sha}} .
