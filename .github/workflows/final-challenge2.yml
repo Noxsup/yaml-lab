@@ -17,6 +17,7 @@ env:
   IMAGE_NAME: node-backend
   NODE_VERSION: '20'
   REGISTRY: ghcr.io
+  IMAGE_PATH: ghcr.io/noxsup/node-backend
 
 jobs:
   test:
@@ -54,7 +55,7 @@ jobs:
           password: ${{ secrets.CR_PAT }}
 
       - name: Build Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        run: docker build -t ${{ env.IMAGE_PATH }}:${{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: docker push ${{ env.IMAGE_PATH }}:${{ github.sha }}
